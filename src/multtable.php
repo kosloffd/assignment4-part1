@@ -24,7 +24,7 @@ header('Content-Type: text/html');
 		$minMultiplicand = $_GET["min-multiplicand"];
 		$maxMultiplicand = $_GET["max-multiplicand"];
 		$minMultiplier = $_GET["min-multiplier"];
-		$maxMultiplier = $_GET["max-multiplier"];
+		$maxMultiplier = $_GET["max-multiplier"];	
 
 		//Check whether the variables are comparatively less or more
 		if(!($minMultiplicand < $maxMultiplicand))
@@ -39,17 +39,24 @@ header('Content-Type: text/html');
 		{
 			$height = $maxMultiplicand - $minMultiplicand + 2;
 			$width = $maxMultiplier - $minMultiplier + 2;
-			echo <table>;
+			echo "<table>";
 			for($col = 0; $col<$height; $col ++)
 			{
 				echo "<tr>";
-				//if col = 0, echo "<td>";
-				//else echo "<td>$col;"
-				for($row = 0; $row<$width; $row++)
+				if($col != 0) {echo "<td>$col";}
+				else{echo "<td>";}
+
+				for($row = 1; $row<$width; $row++)
 				{
-					//if col = 0, echo "<td>$row"
+					if($col != 0 & $row != 0)
+					{
+						$product = $row*$col;
+						echo "<td>$product";
+					}
+					else{echo "<td>$row";}
 					//else, echo "<td>$row*$col;" 
 				}
 			}
+			echo "</table>";
 		}
 ?>
