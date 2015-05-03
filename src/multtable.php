@@ -8,53 +8,55 @@ header('Content-Type: text/html');
 	<title>Multiplication Table</title>
 
 	<?php
+		$validated = true;
 		//All the input validation performed first
 		foreach($_GET as $key => $value)
 		{
 			if($value == "")
 			{
 				echo "Missing parameter: $key<br>";
+				$validated = false;
 			}
-			if(!(is_numeric($value) && $value > 0))
+			if(!(is_numeric($value) && $value >= 0))
 			{
-				echo "<br>$key must be an integer larger than zero.<br>";
+				echo "<br>$key must be an integer.<br>";
+				$validated = false;
 			}
 		}
-
-		$minMultiplicand = $_GET["min-multiplicand"];
-		$maxMultiplicand = $_GET["max-multiplicand"];
-		$minMultiplier = $_GET["min-multiplier"];
-		$maxMultiplier = $_GET["max-multiplier"];	
 
 		//Check whether the variables are comparatively less or more
-		if(!($minMultiplicand < $maxMultiplicand))
+		if($_GET["min-multiplicand"] > $_GET["max-multiplicand"])
 		{
 			echo "The min-multiplicand value is larger than the max-multiplicand value.";
+			$validated = false;
 		}
-		else if(!($minMultiplier < $maxMultiplier))
+		if($_GET["min-multiplier"] > $_GET["max-multiplier"])
 		{
 			echo "The min-multiplier value is larger than the max-multiplier value.";
+			$validated = false;
 		}
-		else
+		if($validated == true)
 		{
-			$height = $maxMultiplicand - $minMultiplicand + 2;
-			$width = $maxMultiplier - $minMultiplier + 2;
+			$minMultiplicand = $_GET["min-multiplicand"];
+			$maxMultiplicand = $_GET["max-multiplicand"];
+			$minMultiplier = $_GET["min-multiplier"];
+			$maxMultiplier = $_GET["max-multiplier"];	
+
 			echo "<table>";
-			for($col = 0; $col<$height; $col ++)
+			for($col = $minMultiplicand-1; $col<=$maxMultiplicand; $col ++)
 			{
 				echo "<tr>";
-				if($col != 0) {echo "<td>$col";}
+				if($col != $minMultiplicand-1) {echo "<td>$col";}
 				else{echo "<td>";}
 
-				for($row = 1; $row<$width; $row++)
+				for($row =  $minMultiplier; $row<=$maxMultiplier; $row++)
 				{
-					if($col != 0 & $row != 0)
+					if($col != $minMultiplicand-1)					//other than the first row
 					{
 						$product = $row*$col;
 						echo "<td>$product";
 					}
-					else{echo "<td>$row";}
-					//else, echo "<td>$row*$col;" 
+					else{echo "<td>$row";}									//in the first row just put labels
 				}
 			}
 			echo "</table>";
